@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transcriber Global Contexts</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="manual-header">
+	<div class="header-left">
+		<img src="_images/app-icon.png" alt="Transcriber icon" class="header-app-icon">
+	</div>
+	<div class="header-center">
+		<div class="header-app-name">Transcriber</div>
+		<div class="header-manual-title">Global Contexts Guide</div>
+	</div>
+	<div class="header-right"></div>
+</header>
+<div class="manual-body-container">
+<aside class="manual-sidebar">
+	<nav>
+		<div class="sidebar-nav-title">Guide Sections</div>
+		<ul class="sidebar-nav-list">
+			<li class="sidebar-nav-item"><a href="#what" class="sidebar-nav-link">What Global Contexts Are</a></li>
+			<li class="sidebar-nav-item"><a href="#quick-start" class="sidebar-nav-link">Quick Start</a></li>
+			<li class="sidebar-nav-item"><a href="#library" class="sidebar-nav-link">The Context Library</a></li>
+			<li class="sidebar-nav-item"><a href="#yaml" class="sidebar-nav-link">The YAML Format</a></li>
+			<li class="sidebar-nav-item"><a href="#document" class="sidebar-nav-link">Contexts per Document</a></li>
+			<li class="sidebar-nav-item"><a href="#growing" class="sidebar-nav-link">Growing a Context</a></li>
+			<li class="sidebar-nav-item"><a href="#person" class="sidebar-nav-link">Generating a Person Context</a></li>
+			<li class="sidebar-nav-item"><a href="#person-prompt" class="sidebar-nav-link sub">The Prompt</a></li>
+			<li class="sidebar-nav-item"><a href="#person-import" class="sidebar-nav-link sub">Import and Enhance</a></li>
+			<li class="sidebar-nav-item"><a href="#tips" class="sidebar-nav-link">Tips and Limits</a></li>
+		</ul>
+	</nav>
+</aside>
+<main class="manual-main-content">
+<div class="manual-container">
+
+<section id="what">
+	<h2>What Global Contexts Are</h2>
+	<p>Speech recognition gets ordinary words right and proper nouns wrong. A podcast called <em>Calici in Cuffia</em> becomes “calici in cuffie”, an app called <em>Sommelio</em> becomes “somme lio”, a grape called <em>Timorasso</em> becomes “timo rasso”.</p>
+	<p>A <strong>Global Context</strong> is a reference document you keep in Transcriber: the names, brands, places and terms that come up in your recordings, with their correct spelling and the ways they tend to be misheard. During <strong>AI Semantic Correction</strong> the enabled contexts are sent to the model together with the transcript, so the AI knows that “cantina val torre” is the winery <em>Cantina Valtorre</em>.</p>
+	<div class="note">
+		<p>Contexts are a library shared by all your documents. Each document chooses which contexts it uses, so a wine podcast and a tech interview can each get their own vocabulary.</p>
+	</div>
+	<div class="image-container">
+		<img src="_images/document-editor.png" alt="Transcript with misheard proper nouns" class="manual-image">
+		<div class="image-description">A raw transcript (fictional demo). Names are misheard in almost every line. Segment 3 was fixed by the AI using a context; the original text is shown in blue above it.</div>
+	</div>
+</section>
+
+<hr class="section-divider">
+
+<section id="quick-start">
+	<h2>Quick Start</h2>
+	<ol class="steps">
+		<li>Open <strong>Settings → AI &amp; Translation → Global Contexts</strong> and click <strong>Manage Contexts…</strong>.</li>
+		<li>Click <strong>New</strong>, <strong>Import…</strong> or <strong>Paste as New Context</strong>. A YAML list of entities works best (see <a href="#yaml">The YAML Format</a>), but plain text, Markdown and JSON are accepted too.</li>
+		<li>Turn the switch on next to the context: it will be used by default in new documents.</li>
+		<li>In a document, open <strong>Tools</strong>: the badge next to the AI section shows how many contexts are active and their size in tokens. Click it to change the selection for this document.</li>
+		<li>Run <strong>AI Semantic Correction</strong> as usual.</li>
+	</ol>
+	<div class="image-container">
+		<img src="_images/tools-menu.png" alt="Tools popover with the contexts badge" class="manual-image">
+		<div class="image-description">The Tools popover. The badge “1 · ~521 tok” next to the AI section means one context of about 521 tokens is active for this document. The AI section also holds <strong>Extract Entities to Context…</strong>.</div>
+	</div>
+</section>
+
+<hr class="section-divider">
+
+<section id="library">
+	<h2>The Context Library</h2>
+	<h3 class="subsection-title">Settings pane</h3>
+	<p>The <strong>Global Contexts</strong> tab in Settings lists every context with its format, language and size. The switch sets whether a context is enabled by default for <em>new</em> documents. Existing documents keep their own selection.</p>
+	<div class="image-container">
+		<img src="_images/settings-pane.png" alt="Global Contexts settings pane" class="manual-image">
+		<div class="image-description">Settings → AI &amp; Translation → Global Contexts. The footer shows how many contexts are enabled by default and their total size.</div>
+	</div>
+
+	<h3 class="subsection-title">Manager window</h3>
+	<p>The manager is where you create and edit contexts.</p>
+	<div class="image-container">
+		<img src="_images/manager-window.png" alt="Global Contexts manager window" class="manual-image">
+		<div class="image-description">The manager window with a YAML person context open in the editor.</div>
+	</div>
+	<table>
+		<tr><th>Control</th><th>What it does</th></tr>
+		<tr><td><strong>New</strong></td><td>Creates an empty YAML context.</td></tr>
+		<tr><td><strong>Import…</strong></td><td>Adds files (<code>.yaml</code>, <code>.json</code>, <code>.md</code>, <code>.txt</code>). The format is detected from the content.</td></tr>
+		<tr><td><strong>Paste as New Context</strong></td><td>Creates a context from the clipboard: the quickest way to bring in a YAML produced by ChatGPT or Gemini.</td></tr>
+		<tr><td>Sidebar switch</td><td>Enabled by default for new documents.</td></tr>
+		<tr><td><strong>Name</strong>, <strong>Format</strong>, <strong>Language</strong></td><td>Display name, how the text is read, and the language of the names (used to judge plausible mishearings).</td></tr>
+		<tr><td><strong>Convert to Phonetic YAML with AI</strong></td><td>Turns a free-form context (notes, a bio, a glossary) into the YAML entity format.</td></tr>
+		<tr><td><strong>Enrich sounds_like</strong></td><td>Asks the AI to add more likely mishearings to each entity, keeping what is already there.</td></tr>
+		<tr><td>Status bar</td><td>Save state, characters and tokens of this context, and the total of the default contexts against the usable window of the current AI model.</td></tr>
+	</table>
+</section>
+
+<hr class="section-divider">
+
+<section id="yaml">
+	<h2>The YAML Format</h2>
+	<p>Any text is accepted, but the AI works best with a list of <strong>entities</strong>. Each one says what is correct and what the transcription produced instead.</p>
+<pre><code>context_name: "Giulia Ferrante"
+entities:
+  - canonical: "Calici in Cuffia"        # correct spelling
+    category: "podcast"                  # person, company, product, place…
+    description: "Wine podcast hosted by Giulia Ferrante"
+    sounds_like:                         # how speech recognition writes it
+      - "calici in cuffie"
+      - "cali che in cuffia"
+  - canonical: "Timorasso"
+    category: "grape"
+    description: "White grape native to the Colli Tortonesi"
+    sounds_like:
+      - "timo rasso"
+      - "timorazzo"</code></pre>
+	<table>
+		<tr><th>Key</th><th>Meaning</th></tr>
+		<tr><td><code>context_name</code></td><td>Name of the context.</td></tr>
+		<tr><td><code>entities</code></td><td>The list the AI tools read and merge into.</td></tr>
+		<tr><td><code>canonical</code></td><td>The correct form, exactly as it should appear in the subtitles.</td></tr>
+		<tr><td><code>category</code></td><td>Free label. It helps the AI judge whether a replacement fits the sentence.</td></tr>
+		<tr><td><code>description</code></td><td>One line of meaning: who or what it is.</td></tr>
+		<tr><td><code>sounds_like</code></td><td>Wrong spellings the recognizer actually produces: split or merged words, wrong endings, homophones.</td></tr>
+	</table>
+	<div class="note">
+		<p>Extra top-level sections such as <code>profile</code> or <code>topics</code> are allowed and are sent to the AI as background. The merge and enrich tools only change <code>entities</code>, so your other sections are kept as written.</p>
+	</div>
+</section>
+
+<hr class="section-divider">
+
+<section id="document">
+	<h2>Contexts per Document</h2>
+	<p>Each document stores its own list of active contexts. A new document starts with the contexts enabled in Settings. Click the badge in <strong>Tools</strong> to change it.</p>
+	<div class="image-container">
+		<img src="_images/document-contexts.png" alt="Contexts for this document popover" class="manual-image">
+		<div class="image-description">“Contexts for This Document”: one switch per context, Select All / Select None, and a meter with the fixed prompt size against the usable window of the selected model.</div>
+	</div>
+	<p>Watch the meter. Contexts are sent with every correction chunk: the bigger they are, the less room is left for transcript text in each request. When contexts take a large share of the window, Transcriber sends smaller chunks of transcript, which means more requests.</p>
+</section>
+
+<hr class="section-divider">
+
+<section id="growing">
+	<h2>Growing a Context</h2>
+	<p>Contexts get better as you correct transcripts. Two tools turn your corrections into entities.</p>
+
+	<h3 class="subsection-title">Add to Global Context… (one segment)</h3>
+	<p>After you fix a name by hand, or after the AI fixes one, open the segment's <strong>…</strong> menu and choose <strong>Add to Global Context…</strong>. Transcriber compares the segment with its earlier text and proposes the changed words as rows: correct spelling, sounds like, category. Check the rows to keep, pick the destination context (or a new one) and click <strong>Add</strong>.</p>
+	<div class="image-container">
+		<img src="_images/segment-menu.png" alt="Segment menu with Add to Global Context" class="manual-image">
+		<div class="image-description">The segment menu. Here “timo rasso / dertona” became “Timorasso / Derthona”: both pairs are proposed as entities.</div>
+	</div>
+	<p>If the canonical already exists in the destination, the new <code>sounds_like</code> values are merged into it. Otherwise the entity is appended.</p>
+
+	<h3 class="subsection-title">Extract Entities to Context… (whole transcript)</h3>
+	<p>In <strong>Tools → AI</strong>, <strong>Extract Entities to Context…</strong> opens a window where the AI lists the people, places, brands and terms of the current transcript. Review the rows, switch off the ones you do not want, choose <strong>Into</strong> (an existing YAML context or a new one) and click <strong>Add to Context</strong>. Run it on a transcript that has already been corrected, so the canonical spellings are right.</p>
+</section>
+
+<hr class="section-divider">
+
+<section id="person">
+	<h2>Generating a Person Context</h2>
+	<p>For a recurring speaker, such as a podcast host or a guest, the fastest start is to let a web-search-capable assistant (ChatGPT, Gemini, Perplexity, Claude…) build the context. It looks up everything public about the person, then writes the YAML with both meaning (<code>profile</code>, <code>topics</code>) and vocabulary (<code>entities</code>).</p>
+
+	<h3 class="subsection-title" id="person-prompt">The prompt</h3>
+	<p>Copy the prompt, replace the <code>{{…}}</code> placeholders, and paste it into an assistant with web search turned on. Fields you do not know can be left empty: the assistant will ask.</p>
+<pre class="prompt-block"><code>I am building a reference document for an AI that corrects automatic
+transcripts of podcasts and interviews. Speech recognition gets ordinary words
+right but mangles proper nouns: people, companies, brands, products, services,
+places, events, technical terms. The document tells the correcting AI what the
+right names are, what they mean, and how they tend to be misheard.
+
+SUBJECT
+- Name: {{FULL NAME}}
+- Spoken language of the recordings: {{LANGUAGE, e.g. Italian}}
+- What I already know (role, company, city, links, social handles): {{NOTES}}
+- Kind of recordings: {{e.g. my own podcast / interviews I give / talks}}
+
+BEFORE YOU START
+If anything is unclear (for example several people share this name), ask me
+questions one at a time, numbered as "Question N of about T". When a question
+has two or more possible answers, list them all so I can pick one. Start the
+research only when everything is clear.
+
+RESEARCH
+Search the web broadly and in depth: official sites, LinkedIn and social
+profiles, interviews, podcasts and their episode lists, press, company
+registries, app stores, conference programmes, books and publications.
+Collect every proper noun connected to the subject: companies and roles
+(current and past), brands, products and services, apps and software,
+podcasts, shows and channels, frequent collaborators and guests, places,
+events, awards, and the jargon of their field. Prefer names the subject is
+likely to SAY OUT LOUD. Do not invent anything: leave out what you cannot
+verify, or mark it "(unverified)" in its description.
+
+OUTPUT
+Reply with ONE YAML code block and nothing else, with this structure:
+
+context_name: "{{FULL NAME}}"
+profile:
+  full_name: ""
+  also_known_as: []        # nicknames, handles, stage names
+  roles: []
+  organisations: []        # current and past, with role
+  area: ""
+  speaking_style: ""       # language mix, accent, habits that affect transcription
+topics: []                 # what they usually talk about
+timeline: []               # short dated milestones, only if useful
+sources: []                # URLs you relied on
+entities:
+  - canonical: ""          # exact correct spelling and capitalisation
+    category: ""           # person | company | brand | product | service | app |
+                           # podcast | show | place | event | term | ...
+    description: ""        # one line: what it is and how it relates to the subject
+    sounds_like: []        # see the rules below
+
+RULES FOR sounds_like
+- Write 2 to 6 plausible MIS-TRANSCRIPTIONS that a {{LANGUAGE}} speech
+  recognizer would produce when the name is spoken by a {{LANGUAGE}} speaker:
+  words split or merged ("somme lio"), letters dropped or doubled, endings
+  changed, foreign names spelled the way they sound in {{LANGUAGE}}, English
+  names pronounced the {{LANGUAGE}} way, homophones made of common words.
+- Never repeat the canonical form, and do not list mere case changes.
+- For acronyms, include the spelled-out letters as they would be written in
+  {{LANGUAGE}} (for example "a i" or "ei ai" for "AI").
+
+LIMITS
+- Put the subject themself first in entities, then the most frequent names.
+- Keep profile, topics and timeline short (they cost tokens on every request).
+  Aim for at most about 80 entities. If there are more, keep the ones most
+  likely to be spoken.
+- Use plain double-quoted strings and two-space indentation. No tabs, no
+  anchors, no comments outside the template.</code></pre>
+	<div class="note">
+		<p><strong>What changed from a plain “find everything about X” prompt:</strong> it asks numbered clarifying questions first (homonyms are common), it gives the exact schema Transcriber reads, it explains how to write <code>sounds_like</code> for the recordings' language, it forbids invented facts, and it caps the size so the context stays cheap on every AI request.</p>
+	</div>
+	<p>The demo persona used in this guide's screenshots was made this way (the person is fictional):</p>
+<pre><code>context_name: "Giulia Ferrante"
+profile:
+  full_name: "Giulia Ferrante"
+  roles:
+    - "Sommelier and wine educator"
+    - "Host of the podcast Calici in Cuffia"
+    - "Founder of the app Sommelio"
+  area: "Tortona and the Colli Tortonesi, Piedmont"
+  speaking_style: "Italian, fast, mixes English tech terms with wine jargon"
+topics:
+  - "Natural and low-intervention wines"
+  - "Piedmont native grapes"
+  - "Wine apps and digital tasting notes"
+entities:
+  - canonical: "Giulia Ferrante"
+    category: "person"
+    description: "Host of Calici in Cuffia, the speaker"
+    sounds_like: ["Giulia Ferranti", "Giulia Ferrant"]
+  - canonical: "Sommelio"
+    category: "app"
+    description: "iPhone app for tasting notes, founded by Giulia"
+    sounds_like: ["somme lio", "so melio"]
+  - canonical: "Cantina Valtorre"
+    category: "winery"
+    description: "Family winery in the Colli Tortonesi"
+    sounds_like: ["cantina val torre", "cantina valtore"]</code></pre>
+
+	<h3 class="subsection-title" id="person-import">Import and enhance</h3>
+	<ol class="steps">
+		<li>Copy the YAML from the assistant's reply (only the code block).</li>
+		<li>In the manager, click <strong>Paste as New Context</strong>. Check that <strong>Format</strong> reads YAML and set <strong>Language</strong> to the language of the recordings.</li>
+		<li>Read it once. Delete wrong or unverifiable entries; a wrong entity can make the AI “correct” a word that was right.</li>
+		<li>Click <strong>Enrich sounds_like</strong> to add more mishearings. Run it again after a few episodes if names still slip through.</li>
+		<li>Switch it on in Settings (default for new documents) or only in the documents where that person speaks.</li>
+		<li>Over time, feed it real errors with <strong>Add to Global Context…</strong> and <strong>Extract Entities to Context…</strong>: errors seen in your own transcripts are the most valuable <code>sounds_like</code> of all.</li>
+	</ol>
+	<p>The same prompt works for a company, a show or a topic: replace the SUBJECT block and keep the rest.</p>
+</section>
+
+<hr class="section-divider">
+
+<section id="tips">
+	<h2>Tips and Limits</h2>
+	<ul>
+		<li><strong>Many small contexts beat one huge one.</strong> Keep one per person, show or field, and enable only those that fit the recording.</li>
+		<li><strong>Size matters.</strong> Every enabled context is sent with every chunk. Check the meter in the document popover, especially with small-window models. If the contexts would not fit the model's window at all, the correction does not start.</li>
+		<li><strong>Canonical spelling is law.</strong> The AI copies <code>canonical</code> verbatim, capitals and accents included.</li>
+		<li><strong>Short words are risky.</strong> A <code>sounds_like</code> that is also a common word (“torre”, “lì”) can trigger wrong replacements. Prefer multi-word forms (“cantina val torre”).</li>
+		<li><strong>Private data stays local</strong> until a correction runs. Then the enabled contexts go to the AI provider configured in Settings, like the transcript itself.</li>
+	</ul>
+</section>
+
+</div>
+</main>
+</div>
+</body>
+</html>
